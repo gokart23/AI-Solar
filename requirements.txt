@@ -1,0 +1,9 @@
+bottleneck
+matplotlib
+numexpr
+numpy
+pandas
+python-dateutil
+pytz
+setuptools
+statsmodels

@@ -1,0 +1,134 @@
+Performing Dicker-Fuller test for stationarity of Chennai data:
+Test Statistic	Critical Value (10%)
+-23.9781386251 -2.56678171452
+-25.0245114662 -2.56678171452
+-22.3854080092 -2.56678171452
+-6.38655808255 -2.56678171452
+-8.60105390387 -2.56678171452
+-3.2322642862 -2.56678171452
+-14.0314583243 -2.56678171452
+-8.57482866231 -2.56678171452
+-9.68509941186 -2.56678171452
+-15.0522184146 -2.56678171452
+-35.204446981 -2.56678171452
+-12.2293193414 -2.56678171452
+nan -2.56678170801
+-11.284417724 -2.56678171452
+-21.1339653594 -2.56678171452
+Chennai data stationarity:
+    DHI   DNI   GHI Clearsky DHI Clearsky DNI Clearsky GHI Dew Point  \
+   True  True  True         True         True         True      True   
+
+  Temperature Pressure Relative Humidity Solar Zenith Angle  \
+         True     True              True               True   
+
+  Precipitable Water Snow Depth Wind Direction Wind Speed  
+                True      False           True       True  
+
+Performing Dicker-Fuller test for stationarity of Delhi data:
+Test Statistic	Critical Value (10%)
+-8.94260153921 -2.56678171452
+-22.5388592481 -2.56678171452
+-15.7424112728 -2.56678171452
+-4.28305505722 -2.56678171452
+-7.84549657119 -2.56678171452
+-2.49556365314 -2.56678171452
+-8.73112345227 -2.56678171452
+-6.03510598282 -2.56678171452
+-7.7385248176 -2.56678171443
+-9.97040785227 -2.56678171443
+-37.0842337488 -2.56678171452
+-7.85575551147 -2.56678171452
+nan -2.56678170801
+-26.9369544853 -2.56678171434
+-26.9276892115 -2.56678171452
+Delhi data stationarity:
+    DHI   DNI   GHI Clearsky DHI Clearsky DNI Clearsky GHI Dew Point  \
+   True  True  True         True         True        False      True   
+
+  Temperature Pressure Relative Humidity Solar Zenith Angle  \
+         True     True              True               True   
+
+  Precipitable Water Snow Depth Wind Direction Wind Speed  
+                True      False           True       True  
+
+Performing Dicker-Fuller test for stationarity of Mumbai data:
+Test Statistic	Critical Value (10%)
+-13.544022229 -2.56678171452
+-15.1450680532 -2.56678171452
+-18.3877512128 -2.56678171452
+-4.57551563517 -2.56678171452
+-8.56373775574 -2.56678171452
+-2.63791994036 -2.56678171452
+-9.58510898521 -2.56678171452
+-13.8362407756 -2.56678171452
+-9.97190628529 -2.56678171452
+-10.9088768168 -2.56678171452
+-35.541783417 -2.56678171452
+-9.19076167476 -2.56678171452
+nan -2.56678170801
+-18.4279526929 -2.56678171434
+-15.4209935411 -2.56678171452
+Mumbai data stationarity:
+    DHI   DNI   GHI Clearsky DHI Clearsky DNI Clearsky GHI Dew Point  \
+   True  True  True         True         True         True      True   
+
+  Temperature Pressure Relative Humidity Solar Zenith Angle  \
+         True     True              True               True   
+
+  Precipitable Water Snow Depth Wind Direction Wind Speed  
+                True      False           True       True  
+
+Performing Dicker-Fuller test for stationarity of Bhopal data:
+Test Statistic	Critical Value (10%)
+-11.1822896309 -2.56678171452
+-16.8253915845 -2.56678171452
+-16.3518665344 -2.56678171452
+-4.6373621867 -2.56678171452
+-8.61828732079 -2.56678171452
+-2.59474880106 -2.56678171452
+-8.91566821357 -2.56678171452
+-6.57414379527 -2.56678171452
+-8.75384337306 -2.56678171452
+-7.37264517425 -2.56678171452
+-35.9475884522 -2.56678171452
+-8.2332418561 -2.56678171452
+nan -2.56678170801
+-19.7926616433 -2.56678171434
+-17.5787278198 -2.56678171452
+Bhopal data stationarity:
+    DHI   DNI   GHI Clearsky DHI Clearsky DNI Clearsky GHI Dew Point  \
+   True  True  True         True         True         True      True   
+
+  Temperature Pressure Relative Humidity Solar Zenith Angle  \
+         True     True              True               True   
+
+  Precipitable Water Snow Depth Wind Direction Wind Speed  
+                True      False           True       True  
+
+Performing Dicker-Fuller test for stationarity of Guwahati data:
+Test Statistic	Critical Value (10%)
+-14.3251841538 -2.56678171452
+-27.8058947115 -2.56678171452
+-25.1415534021 -2.56678171452
+-4.83150416746 -2.56678171452
+-5.03433585765 -2.56678171452
+-2.06933098904 -2.56678171452
+-8.41780358121 -2.56678171443
+-7.28775731757 -2.56678171452
+-10.3754796333 -2.56678171443
+-13.1966755518 -2.56678171452
+-39.0301483429 -2.56678171452
+-6.49485071397 -2.56678171452
+nan -2.56678170801
+-24.1191582942 -2.56678171452
+-20.2118794607 -2.56678171452
+Guwahati data stationarity:
+    DHI   DNI   GHI Clearsky DHI Clearsky DNI Clearsky GHI Dew Point  \
+   True  True  True         True         True        False      True   
+
+  Temperature Pressure Relative Humidity Solar Zenith Angle  \
+         True     True              True               True   
+
+  Precipitable Water Snow Depth Wind Direction Wind Speed  
+                True      False           True       True  
