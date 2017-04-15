@@ -1,5 +1,7 @@
 import config
 import data
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller
 import warnings
@@ -34,5 +36,19 @@ def test_stationarity():
         print(sdf)
 
 
+def hourwise_dni_boxplot():
+    """Plot DNI percentiles for each hour using boxplot"""
+    df = data.read_csv_all_cities()
+
+    hourwise_dni = df.groupby('Hour')['DNI'].apply(np.array)
+    hourwise_dni = np.column_stack(hourwise_dni)
+
+    fig = plt.figure()
+    plt.boxplot(hourwise_dni, 0, '')
+    fig.suptitle('Boxplot of DNI vs hour of day for all cities')
+    plt.xlabel('Hour of day')
+    plt.ylabel('Direct Normal Irradiance (W/m^2)')
+    plt.show()
+
 if __name__ == '__main__':
-    test_stationarity()
+    hourwise_dni_boxplot()
