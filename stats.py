@@ -50,5 +50,38 @@ def hourwise_dni_boxplot():
     plt.ylabel('Direct Normal Irradiance (W/m^2)')
     plt.show()
 
+def plot_corr(df):
+    """Function plots a graphical correlation matrix for input/ouput variables in dataframe."""
+
+    corr = df.ix[:, :'Wind Speed'].corr()
+    fig, ax = plt.subplots()
+    plt.matshow(corr, cmap='jet')
+    plt.colorbar()
+    plt.xticks(range(len(corr.columns)), corr.columns, rotation=50, fontsize=8 )
+    plt.yticks(range(len(corr.columns)), corr.columns, rotation=45, fontsize=6)
+    plt.savefig("output/stats.full_confeature_correlation.png")
+    plt.close()
+
+    fig, ax = plt.subplots()
+    in_out_corr = corr.ix[:, 3:][:3]
+    plt.matshow(in_out_corr, cmap='jet')
+    plt.colorbar()
+    plt.xticks(range(len(corr.ix[0:2, 3:].columns)), corr.ix[0:2, 3:].columns, rotation=45, fontsize=8)
+    plt.yticks(range(len(corr.ix[0:2, :3].columns)), corr.ix[0:2, :3].columns, rotation=45,fontsize=6)
+    plt.savefig("output/stats.input_output_correlation.png")
+    plt.close()
+
+    fig, ax = plt.subplots()
+    in_corr = corr.ix[:, 3:][3:]
+    plt.matshow(in_corr, cmap='jet')
+    plt.colorbar()
+    plt.xticks(range(len(corr.ix[3:, 3:].columns)), corr.ix[3:, 3:].columns, rotation=45, fontsize=8)
+    plt.yticks(range(len(corr.ix[3:, 3:].columns)), corr.ix[3:, 3:].columns, rotation=45,fontsize=6)
+    plt.savefig("output/stats.input_confeature_correlation.png")
+    plt.close()
+
+
 if __name__ == '__main__':
-    hourwise_dni_boxplot()
+    # hourwise_dni_boxplot()
+    df = data.read_data()
+    plot_corr(df)
