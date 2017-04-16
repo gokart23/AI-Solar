@@ -18,3 +18,6 @@ dropped_features = [
     18,     # Wind Direction
     20,     # Fill Flag
 ]
+
+# Night-time hours to be dropped
+dropped_hours = [0, 1, 2, 3, 4, 5, 18, 19, 20, 21, 22, 23]
