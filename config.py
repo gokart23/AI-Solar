@@ -7,6 +7,14 @@ directories = {
     'Mumbai': 'data/NREL-Mumbai-2000-2014',
 }
 
+datasets = {
+    'Bhopal': 'data/dataset_Bhopal.pkl',
+    'Chennai': 'data/dataset_Chennai.pkl',
+    'Delhi': 'data/dataset_Delhi.pkl',
+    'Guwahati': 'data/dataset_Guwahati.pkl',
+    'Mumbai': 'data/dataset_Mumbai.pkl',   
+}
+
 # Features to be dropped while reading csv data
 dropped_features = [
     0,      # Year

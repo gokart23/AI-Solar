@@ -1,6 +1,9 @@
 import config
 import os
+import numpy as np
 import pandas as pd
+import _pickle as pkl
+import sklearn.model_selection as skm
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -62,6 +65,7 @@ def preprocess():
 
     # Convert hour, day, month and city into one-hot vectors
     onehot = ['Hour', 'Day', 'Month', 'City']
+
     dummified = pd.get_dummies(df, columns=onehot, prefix=onehot, prefix_sep='')
     column_names = dummified.columns
 
@@ -85,6 +89,55 @@ def read_data():
     """Read pickle containing preprocessed data"""
     return pd.read_pickle('data/preprocessed.pkl')
 
+def input_output_split(df):
+    """Separate input variables and output variables of data"""
+    return df.ix[:, 'Dew Point':], df.ix[:, :'GHI']
+
+def train_validate_test_split(df, test_percent=.2, validate_percent=.25, seed=2345):
+    """Generate training/validation/testing data uniformly from dataset"""
+    np.random.seed(seed)
+    perm = np.random.permutation(df.index)
+        
+    test_end = int( (test_percent) * df.shape[0])
+    test = df.ix[ perm[:test_end] ]    
+    
+    validate_end = int( (1-test_percent) * validate_percent * df.shape[0]) + test_end
+    validate = df.ix[perm[test_end:validate_end]]
+    
+    train = df.ix[perm[validate_end:]]
+    
+    return train, validate, test
+
+def create_dataset_global(savefile="dataset"):
+    """Generate training, validation and testing data from all data"""
+    df = read_data()
+    df_train, df_val, df_test = train_validate_test_split(df)
+    (X_train, y_train), (X_val, y_val), (X_test, y_test) = input_output_split(df_train), input_output_split(df_val), input_output_split(df_test)
+    
+    # Not using to_pickle or np.savez in order to maintain DF structure
+    with open("data/" + savefile + ".pkl", "wb") as f:
+        pkl.dump( dict(X_train=X_train, y_train=y_train, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test), f)
+
+def create_dataset_local(city, savefile="dataset"):
+    """Generate training, validation and testing data for a city"""
+    df = read_csv_directory(config.directories[city])
+    df_train, df_val, df_test = train_validate_test_split(df)
+    (X_train, y_train), (X_val, y_val), (X_test, y_test) = input_output_split(df_train), input_output_split(df_val), input_output_split(df_test)
+    with open("data/" + savefile + "_" + city + ".pkl", "wb") as f:
+        pkl.dump( dict(X_train=X_train, y_train=y_train, X_val=X_val, y_val=y_val, X_test=X_test, y_test=y_test), f)
+
+def load_dataset(savefile="data/dataset.pkl"):
+    """Load the training, validation and testing data from saved file"""
+    with open(savefile, "rb") as f:
+        data = pkl.load(f)
+
+    return data['X_train'],data['y_train'], data['X_val'], data['y_val'], data['X_test'], data['y_test']
 
 if __name__ == '__main__':
-    preprocess()
+    # preprocess()
+
+    create_dataset_global()
+    for city in config.directories.keys():
+        create_dataset_local(city)
+
+    X_train, y_train, X_val, y_val, X_test, y_test = load_dataset(savefile=config.datasets['Delhi'])
