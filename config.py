@@ -29,3 +29,6 @@ dropped_features = [
 
 # Night-time hours to be dropped
 dropped_hours = [0, 1, 2, 3, 4, 5, 18, 19, 20, 21, 22, 23]
+
+# Directory used for storing results
+output_directory = "output/"

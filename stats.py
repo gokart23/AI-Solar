@@ -3,8 +3,8 @@ import data
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from statsmodels.tsa.stattools import adfuller
 import warnings
+from statsmodels.tsa.stattools import adfuller
 
 
 def is_stationary(timeseries):
