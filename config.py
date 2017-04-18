@@ -7,6 +7,8 @@ directories = {
     'Mumbai': 'data/NREL-Mumbai-2000-2014',
 }
 
+cities = ['Bhopal', 'Chennai', 'Delhi', 'Guwahati', 'Mumbai']
+
 datasets = {
     'Bhopal': 'data/dataset_Bhopal.pkl',
     'Chennai': 'data/dataset_Chennai.pkl',

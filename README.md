@@ -27,5 +27,7 @@ a marker on required city in the map. We used data of all features from
 ### Configuration
 
 In config.py, one can specify paths to data for different cities.
-
 We noted our results for pre-processing methods under output folder.
+
+Run `python data.py` to generate test, validation and train dataset from raw_data.
+Run `python linear_models.py` to get baseline results from linear regression model.

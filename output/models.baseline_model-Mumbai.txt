@@ -1,0 +1,6 @@
+Baseline Model - Un-normalized Linear Regression
+
+Mean squared error(validation): 0.119343632678
+R2 score(validation): 0.791323849806
+Mean squared error(test): 0.118957758426
+R2 score(test): 0.794934718199
