@@ -1,0 +1,7 @@
+Baseline Model - Linear Regression with L1-regularization
+Current alpha:0.1
+
+Mean squared error(validation): 90.7670229055
+R2 score(validation): 0.673843186661
+Mean squared error(test): 90.7279064913
+R2 score(test): 0.672964639138
