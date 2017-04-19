@@ -1,0 +1,6 @@
+Gradient Boosting Regression Model
+
+Mean squared error(validation): 0.104101983172
+R2 score(validation): 0.837089642051
+Mean squared error(test): 0.105418172596
+R2 score(test): 0.834692146302
