@@ -103,6 +103,20 @@ def feature_importance_bagging(X, y, savefile="feature_importance_bagging.txt"):
         # metrics.print_write( '\n', f)
         metrics.print_write( '\n'.join( [ str((X.columns[ sort_idx[i] ], model.feature_importances_[ sort_idx[i] ])) for i in range(len(X.columns))] ), f )
 
+    importances = model.feature_importances_
+    std = np.std([tree.feature_importances_ for tree in model.estimators_],
+                 axis=0)
+    indices = np.argsort(importances)[::-1]
+    
+    plt.figure()
+    plt.title("Feature importances")
+    plt.bar(range(X.shape[1]), importances[indices],
+           color="r", yerr=std[indices], align="center")
+    plt.xticks(range(X.shape[1]), indices)
+    plt.xlim([-1, X.shape[1]])
+    plt.savefig(config.output_directory + "feature_importance_bagging.png")
+    plt.close()
+
     return [ str((X.columns[ sort_idx[i] ], model.feature_importances_[ sort_idx[i] ])) for i in range(len(X.columns))]
 
 
@@ -113,9 +127,9 @@ def plot_mean_deviation():
     """
     df = pd.read_csv('output/dni_mean_deviation.csv', header=0, index_col=False)
 
-    x = list(range(df.shape[0]))
-    y = df['mean']
-    e = df['deviation']
+    x = list(range(15))
+    y = df['mean'][:15]
+    e = df['deviation'][:15]
 
     plt.errorbar(x, y, e, linestyle='None', marker='o', fmt='-o')
     plt.bar(x, y, fill=False, width=0.4)
@@ -127,13 +141,13 @@ def plot_mean_deviation():
 
 if __name__ == '__main__':
     # hourwise_dni_boxplot()
-    # df = data.read_data()
+    df = data.read_data()
     # plot_corr(df)
     
-    # inp_df, out_df = data.input_output_split(df)
+    inp_df, out_df = data.input_output_split(df)
     # scores = select_k_best(inp_df, out_df.ix[:, 0])
-    # feature_importance_bagging(inp_df, out_df.ix[:, 0])
+    feature_importance_bagging(inp_df, out_df.ix[:, 0])
 
     # print ( '\n'.join( [ (inp_df.columns[i], scores[i]) for i in range(out_df.shape[0])] ) )
-    plot_mean_deviation()
+    # plot_mean_deviation()
 

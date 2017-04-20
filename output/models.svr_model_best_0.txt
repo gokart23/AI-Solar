@@ -1,0 +1,7 @@
+Support Vector Regression
+Current C, model and predictor_idx:1000,1,0
+
+Mean squared error(validation): 0.0818962483945
+R2 score(validation): 0.723155543513
+Mean squared error(test): 0.0821529567836
+R2 score(test): 0.723606542969

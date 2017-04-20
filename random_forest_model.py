@@ -37,6 +37,4 @@ def rf_model(city='', savefile="models.rf_model"):
 
 
 if __name__ == "__main__":
-    # metrics.get_model_results(rf_model)
-    for city in ['Delhi', 'Guwahati', 'Mumbai']:
-    	rf_model(city)
+    metrics.get_model_results(rf_model)

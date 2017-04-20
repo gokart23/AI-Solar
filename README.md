@@ -1,7 +1,7 @@
 ## Solar energy prediction using weather data
 
-We intend to predict solar energy based on data from five cities:
-Bhopal, Chennai, Delhi, Guwahati and Mumbai.
+We intend to predict solar energy based on data from six cities:
+Ahmedabad, Bhopal, Chennai, Delhi, Guwahati and Mumbai.
 
 ### Dependencies
 
@@ -30,4 +30,7 @@ In config.py, one can specify paths to data for different cities.
 We noted our results for pre-processing methods under output folder.
 
 Run `python data.py` to generate test, validation and train dataset from raw_data.
-Run `python linear_models.py` to get baseline results from linear regression model.
+Run `python linear_models.py` to get baseline results from linear regression/SVR model for DNI/DHI/GHI prediction.
+Run `python random_forest_model.py` to get Random-Forest results for DNI/DHI/GHI prediction.
+Run `python gradient_boosting_model.py` to get GBM results for DNI/DHI/GHI prediction.
+Run `python solar_city.py` (with appropriate arguments in the main function) to get baseline/GNB/LogisticRegression results for DNI/DHI/GHI prediction.

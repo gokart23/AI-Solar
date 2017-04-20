@@ -1,0 +1,3 @@
+GNB Confidence Prediction for Mithapur
+0.657307322658
+
