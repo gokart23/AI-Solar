@@ -1,9 +1,12 @@
 import config
 import data
-import matplotlib.pyplot as plt
+import metrics
+import warnings
 import numpy as np
 import pandas as pd
-import warnings
+import matplotlib.pyplot as plt
+from sklearn import ensemble
+from sklearn import feature_selection
 from statsmodels.tsa.stattools import adfuller
 
 
@@ -81,7 +84,36 @@ def plot_corr(df):
     plt.close()
 
 
+def select_k_best(X, y, k=5, savefile="k_best_analysis.txt"):
+    """Using chi squared (chi^2) statistical test for non-negative features to select k-best features from the dataframe"""
+    print (X.shape, y.shape)
+    test = feature_selection.SelectKBest(score_func=feature_selection.mutual_info_regression, k=k)    
+    fit = test.fit(X.values, y.values)
+    sort_idx = np.argsort( fit.scores_ )[::-1]
+    with open(config.output_directory + savefile, "w+") as f:
+        metrics.print_write( '\n'.join( [ str((X.columns[ sort_idx[i] ], fit.scores_[ sort_idx[i] ])) for i in range(len(X.columns))] ), f )
+    return [ str((X.columns[i], fit.scores_[i])) for i in range(len(X.columns))]
+
+def feature_importance_bagging(X, y, savefile="feature_importance_bagging.txt"):
+    model = ensemble.ExtraTreesRegressor()
+    model.fit(X, y)
+    sort_idx = np.argsort( model.feature_importances_ )[::-1]
+    with open(config.output_directory + savefile, "w+") as f:
+        # metrics.print_write( '\n'.join( [ str((X.columns[i], model.feature_importances_[i])) for i in range(len(X.columns))] ), f )
+        # metrics.print_write( '\n', f)
+        metrics.print_write( '\n'.join( [ str((X.columns[ sort_idx[i] ], model.feature_importances_[ sort_idx[i] ])) for i in range(len(X.columns))] ), f )
+
+    return [ str((X.columns[ sort_idx[i] ], model.feature_importances_[ sort_idx[i] ])) for i in range(len(X.columns))]
+
+
 if __name__ == '__main__':
     # hourwise_dni_boxplot()
     df = data.read_data()
-    plot_corr(df)
+    # plot_corr(df)
+    
+    inp_df, out_df = data.input_output_split(df)
+    # scores = select_k_best(inp_df, out_df.ix[:, 0])
+    feature_importance_bagging(inp_df, out_df.ix[:, 0])
+
+    # print ( '\n'.join( [ (inp_df.columns[i], scores[i]) for i in range(out_df.shape[0])] ) )
+    

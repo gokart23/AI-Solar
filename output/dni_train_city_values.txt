@@ -1,0 +1,17 @@
+DNI    0.438904
+dtype: float64,DNI    0.298113
+dtype: float64
+DNI    0.431922
+dtype: float64,DNI    0.318286
+dtype: float64
+DNI    0.45076
+dtype: float64,DNI    0.311791
+dtype: float64
+DNI    0.448542
+dtype: float64,DNI    0.314112
+dtype: float64
+DNI    0.43675
+dtype: float64,DNI    0.311639
+dtype: float64
+
+0.441375551253,0.310788037987
