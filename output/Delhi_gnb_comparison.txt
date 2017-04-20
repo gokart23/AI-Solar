@@ -1,0 +1,3 @@
+GNB Confidence Prediction for Delhi
+0.589120771973
+

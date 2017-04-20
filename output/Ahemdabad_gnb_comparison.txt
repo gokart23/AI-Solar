@@ -1,0 +1,3 @@
+GNB Confidence Prediction for Ahemdabad
+0.679691253194
+
