@@ -106,14 +106,34 @@ def feature_importance_bagging(X, y, savefile="feature_importance_bagging.txt"):
     return [ str((X.columns[ sort_idx[i] ], model.feature_importances_[ sort_idx[i] ])) for i in range(len(X.columns))]
 
 
+def plot_mean_deviation():
+    """Plot mean and standard deviation using errorbar plot
+    
+    Take input from array with three columns: city, mean and deviation.
+    """
+    df = pd.read_csv('output/dni_mean_deviation.csv', header=0, index_col=False)
+
+    x = list(range(df.shape[0]))
+    y = df['mean']
+    e = df['deviation']
+
+    plt.errorbar(x, y, e, linestyle='None', marker='o', fmt='-o')
+    plt.bar(x, y, fill=False, width=0.4)
+    plt.xticks(x, df['city'])
+    plt.margins(0.15)
+    plt.ylabel('DNI mean and deviation ($W/m^2$)')
+    plt.show()
+
+
 if __name__ == '__main__':
     # hourwise_dni_boxplot()
-    df = data.read_data()
+    # df = data.read_data()
     # plot_corr(df)
     
-    inp_df, out_df = data.input_output_split(df)
+    # inp_df, out_df = data.input_output_split(df)
     # scores = select_k_best(inp_df, out_df.ix[:, 0])
-    feature_importance_bagging(inp_df, out_df.ix[:, 0])
+    # feature_importance_bagging(inp_df, out_df.ix[:, 0])
 
     # print ( '\n'.join( [ (inp_df.columns[i], scores[i]) for i in range(out_df.shape[0])] ) )
-    
+    plot_mean_deviation()
+
