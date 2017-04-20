@@ -1,4 +1,3 @@
-import sys
 import data
 import config
 import metrics
@@ -8,6 +7,7 @@ import sklearn.svm as svm
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 import sklearn.ensemble as ensemble
+from sklearn.model_selection import GridSearchCV
 
 
 def baseline_model(city='', savefile="models.baseline_model"):
@@ -140,13 +140,7 @@ def svr_model(city='', max_degree=4, savefile="models.svr_model"):
 
         metrics.generate_results(city, y_val.ix[:, predictor_idx], y_test.ix[:, predictor_idx], pred_val, pred_test, savefile + "_best_" + str(predictor_idx), results_heading)
 
-def get_model_results(model):
-    """ Function to run the specified model on all default parameters on global and local datasets"""
-    model()
-    for city_ in config.cities:
-        model(city_)
-
 if __name__ == "__main__":
-    # get_model_results(baseline_model)
+    # metrics.get_model_results(baseline_model)
 
-    get_model_results(lasso_model)
+    # metrics.get_model_results(lasso_model)

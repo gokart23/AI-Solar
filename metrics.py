@@ -42,6 +42,12 @@ def generate_results(city, y_val, y_test, pred_val, pred_test, savefile, heading
 
     return rmse_val, r2_val, rmse_test, r2_test
 
+def get_model_results(model):
+    """ Function to run the specified model on all default parameters on global and local datasets"""
+    model()
+    for city_ in config.cities:
+        model(city_)
+
 
 def print_write(line, f):
     """Print line and write line to file"""
