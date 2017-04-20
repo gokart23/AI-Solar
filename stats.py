@@ -139,6 +139,73 @@ def plot_mean_deviation():
     plt.show()
 
 
+def plot_r2scores():
+    """Plot R2 scores for each city and model"""
+    df = pd.read_csv('output/r2data.csv', header=0, index_col=False)
+    pos = list(range(df.shape[0]))
+    width = 0.16
+    alpha = 0.9
+    # colors = ['#DFB48E', '#E3D298', '#7DC0C0', '#769BA8', '#787D77']
+    colors = ['#2176AE', '#57B8FF', '#B66D0D', '#FBB13C', '#FE6847']
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    plt.bar(pos, df['Baseline'], width, alpha=alpha, color=colors[0])
+    plt.bar([p+width for p in pos], df['Lasso'], width, alpha=alpha, color=colors[1])
+    plt.bar([p+width*2 for p in pos], df['SVC'], width, alpha=alpha, color=colors[2])
+    plt.bar([p+width*3 for p in pos], df['GBM'], width, alpha=alpha, color=colors[3])
+    plt.bar([p+width*4 for p in pos], df['RF'], width, alpha=alpha, color=colors[4])
+
+    ax.set_ylabel('$R^2$ score')
+    ax.set_xticks([p+1.5*width for p in pos])
+    ax.set_xticklabels(df['city'])
+
+    # plt.xlim(min(pos)-width, max(pos)+width*4)
+    # plt.ylim([0, max(df['Baseline'] + df['Lasso'] + df['SVC'])])
+    plt.ylim([0.6, 1])
+
+    plt.legend(['Baseline', 'Lasso', 'SVC', 'GBM', 'RF'], loc='upper left')
+    plt.grid()
+    plt.show()
+
+
+def plot_confidences():
+    """Plot Gaussian Naive Bayes and logistic regression confidence values for each city"""
+    df = pd.read_csv('output/confidence.csv', header=0, index_col=False)
+    pos = list(range(df.shape[0]))
+    width = 0.33
+    alpha = 0.9
+    # colors = ['#DFB48E', '#E3D298', '#7DC0C0', '#769BA8', '#787D77']
+    colors = ['#2176AE', '#57B8FF', '#B66D0D', '#FBB13C', '#FE6847']
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    plt.bar(pos, df['gnb'], width, alpha=alpha, color=colors[0])
+    plt.bar([p+width for p in pos], df['logistic'], width, alpha=alpha, color=colors[3])
+
+    ax.set_ylabel('Confidence')
+    ax.set_xticks([1.07*p-0.1 for p in pos])
+    ax.set_xticklabels(df['city'])
+
+    # plt.xlim(min(pos)-width, max(pos)+width*4)
+    # plt.ylim([0, max(df['Baseline'] + df['Lasso'] + df['SVC'])])
+    plt.ylim([0.3, 1])
+
+    plt.legend(['Gaussian Naive Bayes', 'Logistic Regression'], loc='upper left')
+    plt.grid()
+    plt.show()
+
+
+def plot_kl_divergence():
+    """Plot KL divergence values for different cites using bar plot"""
+    df = pd.read_csv('output/divergence.csv', header=0, index_col=False)
+
+    pos = list(range(df.shape[0]))
+    plt.bar(pos, df['divergence'], color='#2176AE', tick_label=df['city'], width=0.5)
+    plt.grid(axis='y', linestyle='dotted')
+    plt.show()
+
+
 if __name__ == '__main__':
     # hourwise_dni_boxplot()
     df = data.read_data()
@@ -150,4 +217,7 @@ if __name__ == '__main__':
 
     # print ( '\n'.join( [ (inp_df.columns[i], scores[i]) for i in range(out_df.shape[0])] ) )
     # plot_mean_deviation()
+    # plot_r2scores()
+    # plot_confidences()
+    plot_kl_divergence()
 

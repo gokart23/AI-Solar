@@ -40,7 +40,7 @@ def gradient_boosting_model(city='', modelsavefile='models/gbr', savefile='model
     pred_test = np.column_stack([gbr[i].predict(X_test) for i in range(nmodels)])
 
     results_heading = 'Gradient Boosting Regression Model'
-    metrics.generate_results(city, y_val, pred_val, y_test, pred_test, savefile, results_heading)
+    metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile, results_heading)
 
 
 def plot_deviances(city=''):
