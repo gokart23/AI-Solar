@@ -1,9 +1,13 @@
+import sys
 import data
 import config
 import metrics
 import numpy as np
+import matplotlib
+import sklearn.svm as svm
 import matplotlib.pyplot as plt
 from sklearn import linear_model
+import sklearn.ensemble as ensemble
 
 
 def baseline_model(city='', savefile="models.baseline_model"):
@@ -28,7 +32,6 @@ def baseline_model(city='', savefile="models.baseline_model"):
     pred_test = regr_lm.predict(X_test)
     results_heading = 'Baseline Model - Linear Regression without regularization'
     metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile, results_heading)
-
 
 def lasso_model(city='', max_degree=4, savefile="models.lasso_model"):
     """Train a linear regression model with L1-regularization (and polynomial kernel),
@@ -58,7 +61,7 @@ def lasso_model(city='', max_degree=4, savefile="models.lasso_model"):
         pred_val = regr_lm.predict(X_val)
         pred_test = regr_lm.predict(X_test)
 
-        results_heading = 'Baseline Model - Linear Regression with L1-regularization'
+        results_heading = 'Linear Regression with L1-regularization'
         results_heading += "\nCurrent alpha:" + str(alpha)
 
         rmse_val, r2_val, _, _ = metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile + "_" + str(alpha), results_heading)
@@ -79,11 +82,63 @@ def lasso_model(city='', max_degree=4, savefile="models.lasso_model"):
     metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile + "_best", results_heading)
 
     plt.figure()
-    plt.plot(regr_lm.coef_, color='gold', linewidth=2, label='Lasso coefficients')
+    plt.plot(regr_lm.coef_[0, :], color='gold', linewidth=2, label='Lasso coefficients')
     plt.savefig(savefile + "_best_coef_plot.png")
     plt.close()
     
     return max_alpha, max_r2
+
+def svr_model(city='', max_degree=4, savefile="models.svr_model"):
+    """Train a support vector regression (SVR) model with different kernels,
+       validate according to alpha, and obtain predictions on test-set"""
+
+    if not city:
+        X_train, y_train, X_val, y_val, X_test, y_test = data.load_dataset()
+    else:
+        X_train, y_train, X_val, y_val, X_test, y_test = data.load_dataset(config.datasets[city])
+
+    if city:
+        print('\nFitting model for ' + city)
+    else:
+        print("\nFitting global model")
+    
+    for predictor_idx in range( y_train.shape[1] ):
+        best_model, best_C, best_r2 = 0, 0, 0
+        for C in [0.1, 1, 100, 1000]:
+            max_model, max_r2 = 0, 0
+            svr_rbf = svm.SVR(kernel='rbf', C=C)
+            svr_lin = svm.SVR(kernel='linear', C=C)
+            svr_poly = svm.SVR(kernel='poly', C=C)
+            
+            for idx, regr_lm in enumerate([svr_rbf, svr_lin, svr_poly]):        
+                regr_lm.fit(X_train, y_train.ix[:, predictor_idx])
+                print("Predicting values on", C)
+                pred_val = regr_lm.predict(X_val)
+                pred_test = regr_lm.predict(X_test)
+
+                results_heading = 'Linear Regression with L1-regularization'
+                results_heading += "\nCurrent predictor:" + str(predictor_idx)
+
+                rmse_val, r2_val, _, _ = metrics.generate_results(city, y_val.ix[:, predictor_idx], y_test.ix[:, predictor_idx], pred_val, pred_test, savefile + "_" + str(C) + "_" + str(predictor_idx), results_heading, skip_save=True)
+
+                print()
+                max_model, max_r2 = (idx if max_r2 < r2_val else max_model), (r2_val if max_r2 < r2_val else max_r2)    
+
+            best_C, best_model, best_r2 = (C if max_r2 > best_r2 else best_C), (max_model if  max_r2 > best_r2 else best_model), (r2_val if  max_r2 > best_r2 else best_r2)    
+            
+        print ("Best model observed on validation for C", best_C, "with score", best_r2, "is ", best_model)        
+
+        regr_lm = list([ svm.SVR(kernel='rbf', C=best_C), svm.SVR(kernel='linear', C=best_C), svm.SVR(kernel='poly', C=best_C) ])[ best_model ]
+
+        regr_lm.fit(X_train, y_train.ix[:, predictor_idx])
+        print("Predicting values on best model")
+        pred_val = regr_lm.predict(X_val)
+        pred_test = regr_lm.predict(X_test)
+
+        results_heading = 'Support Vector Regression'
+        results_heading += "\nCurrent C, model and predictor_idx:" + str(best_C) + "," + str(best_model) + "," + str(predictor_idx)
+
+        metrics.generate_results(city, y_val.ix[:, predictor_idx], y_test.ix[:, predictor_idx], pred_val, pred_test, savefile + "_best_" + str(predictor_idx), results_heading)
 
 def get_model_results(model):
     """ Function to run the specified model on all default parameters on global and local datasets"""
