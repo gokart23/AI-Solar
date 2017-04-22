@@ -7,7 +7,7 @@ from sklearn import naive_bayes
 from sklearn import linear_model
 
 def extract_dni_stats(savefile="dni_train_city_values.txt"):
-    """ Extract mean and std_dev values for DNI"""
+	""" Extract mean and std_dev values for DNI"""
 	means, stds = [], []
 	for city in config.solar_power_cities:
 		df = data.read_data(city)
@@ -21,7 +21,7 @@ def extract_dni_stats(savefile="dni_train_city_values.txt"):
 		f.write("\n" + str(tot_mean) + "," + str(tot_std) + "\n")
 
 def baseline_comparison( city, mean=config.solar_mean, std=config.solar_std, header="", savefile="baseline_comparison.txt" ):
-    """ Baseline model for calculating KL-divergence from Gaussian-fit training data """
+	""" Baseline model for calculating KL-divergence from Gaussian-fit training data """
 
 	df = data.read_data(city)
 	df_mean, df_std = df[['DNI']].mean()[0], df[['DNI']].std()[0]
@@ -32,6 +32,7 @@ def baseline_comparison( city, mean=config.solar_mean, std=config.solar_std, hea
 	
 	with open(config.output_directory + savefile, "w+") as f:
 		metrics.print_write( header + "\n" + str( (df_mean, df_std, mean_prob, mean_confidence, kl_div )  ) + "\n", f )
+	return kl_div
 
 def gnb_model(test_city, header="", savefile="gnb_model.txt"):
     """ Gaussian Naive Bayes for predicting confidence as a solar power location """
@@ -64,6 +65,8 @@ def gnb_model(test_city, header="", savefile="gnb_model.txt"):
     with open(config.output_directory + savefile, "w+") as f:
         metrics.print_write( header + "\n" + str( np.mean( prob_pred[:, 1] )  ) + "\n", f )
 
+    return str( np.mean( prob_pred[:, 1] ) )
+
 def logistic_regression_model(test_city, header="", savefile="log_regression_model.txt"):
     """ Logistic Regression Model for predicting confidence as a solar power location"""
     training_df, training_op = [], []
@@ -94,17 +97,19 @@ def logistic_regression_model(test_city, header="", savefile="log_regression_mod
     with open(config.output_directory + savefile, "w+") as f:
         metrics.print_write( header + "\n" + str( np.mean( prob_pred[:, 1] )  ) + "\n", f )
 
-if __name__ == "__main__":
+    return str( np.mean( prob_pred[:, 1] )  )
+
+# if __name__ == "__main__":
 	
-	for city in config.solar_power_cities:
-        preprocess(city)
-		baseline_comparison(city, header="Baseline viability comparison for " + city, savefile="training_baseline_comparison.txt")
-		preprocess(city)
+# 	for city in config.solar_power_cities:
+# 		preprocess(city)
+# 		baseline_comparison(city, header="Baseline viability comparison for " + city, savefile="training_baseline_comparison.txt")
+# 		preprocess(city)
 
-	extract_dni_stats()
+# 	extract_dni_stats()
 
-	for city in config.solar_test_cities:
-		data.preprocess(city)
-		baseline_comparison(city, header="Baseline viability comparison for " + city, savefile=city + "_baseline_comparison.txt")
-		gnb_model(city, header="GNB Confidence Prediction for " + city, savefile=city + "_gnb_comparison.txt")
-		logistic_regression_model(city, header="Logistic Regression Confidence Prediction for " + city, savefile=city + "_logistic_comparison.txt")
+# 	for city in config.solar_test_cities:
+# 		data.preprocess(city)
+# 		baseline_comparison(city, header="Baseline viability comparison for " + city, savefile=city + "_baseline_comparison.txt")
+# 		gnb_model(city, header="GNB Confidence Prediction for " + city, savefile=city + "_gnb_comparison.txt")
+# 		logistic_regression_model(city, header="Logistic Regression Confidence Prediction for " + city, savefile=city + "_logistic_comparison.txt")

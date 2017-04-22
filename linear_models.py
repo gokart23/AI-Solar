@@ -31,7 +31,8 @@ def baseline_model(city='', savefile="models.baseline_model"):
     pred_val = regr_lm.predict(X_val)
     pred_test = regr_lm.predict(X_test)
     results_heading = 'Baseline Model - Linear Regression without regularization'
-    metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile, results_heading)
+    return metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile, results_heading)    
+
 
 def lasso_model(city='', max_degree=4, savefile="models.lasso_model"):
     """Train a linear regression model with L1-regularization (and polynomial kernel),
@@ -140,7 +141,7 @@ def svr_model(city='', max_degree=4, savefile="models.svr_model"):
 
         metrics.generate_results(city, y_val.ix[:, predictor_idx], y_test.ix[:, predictor_idx], pred_val, pred_test, savefile + "_best_" + str(predictor_idx), results_heading)
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # metrics.get_model_results(baseline_model)
 
     # metrics.get_model_results(lasso_model)

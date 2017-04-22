@@ -4,6 +4,9 @@ import metrics
 import warnings
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 from sklearn import ensemble
 from sklearn import feature_selection
@@ -39,9 +42,12 @@ def test_stationarity():
         print(sdf)
 
 
-def hourwise_dni_boxplot():
+def hourwise_dni_boxplot(city='', savefig=False):
     """Plot DNI percentiles for each hour using boxplot"""
-    df = data.read_csv_all_cities()
+    if city:
+        df = data.read_raw_data(city)
+    else:
+        df =   data.read_csv_all_cities()
 
     hourwise_dni = df.groupby('Hour')['DNI'].apply(np.array)
     hourwise_dni = np.column_stack(hourwise_dni)
@@ -51,13 +57,19 @@ def hourwise_dni_boxplot():
     fig.suptitle('Boxplot of DNI vs hour of day for all cities')
     plt.xlabel('Hour of day')
     plt.ylabel('Direct Normal Irradiance (W/m^2)')
-    plt.show()
+    if savefig == True:
+        plt.savefig("output/hourwise_dni.png")
+    else:
+        plt.show()
 
-def plot_corr(df):
+
+
+def plot_corr(df, savefig=False):
     """Function plots a graphical correlation matrix for input/ouput variables in dataframe."""
 
     corr = df.ix[:, :'Wind Speed'].corr()
     fig, ax = plt.subplots()
+
     plt.matshow(corr, cmap='jet')
     plt.colorbar()
     plt.xticks(range(len(corr.columns)), corr.columns, rotation=50, fontsize=8 )
@@ -82,6 +94,8 @@ def plot_corr(df):
     plt.yticks(range(len(corr.ix[3:, 3:].columns)), corr.ix[3:, 3:].columns, rotation=45,fontsize=6)
     plt.savefig("output/stats.input_confeature_correlation.png")
     plt.close()
+
+    return ["output/stats.full_confeature_correlation.png", "output/stats.input_output_correlation.png", "output/stats.input_confeature_correlation.png"]
 
 
 def select_k_best(X, y, k=5, savefile="k_best_analysis.txt"):
@@ -127,9 +141,9 @@ def plot_mean_deviation():
     """
     df = pd.read_csv('output/dni_mean_deviation.csv', header=0, index_col=False)
 
-    x = list(range(15))
+    x = list(range(df.shape[0]))
     y = df['mean'][:15]
-    e = df['deviation'][:15]
+    e = df['deviation']
 
     plt.errorbar(x, y, e, linestyle='None', marker='o', fmt='-o')
     plt.bar(x, y, fill=False, width=0.4)

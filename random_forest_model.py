@@ -33,8 +33,8 @@ def rf_model(city='', savefile="models.rf_model"):
     pred_test = regr_lm.predict(X_test)
     results_heading = 'Random Forest Regressor'
     results_heading += "\nBest params: " + str(regr_lm.get_params())
-    metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile, results_heading)
+    return metrics.generate_results(city, y_val, y_test, pred_val, pred_test, savefile, results_heading)
 
 
-if __name__ == "__main__":
-    metrics.get_model_results(rf_model)
+# if __name__ == "__main__":
+#     metrics.get_model_results(rf_model)
